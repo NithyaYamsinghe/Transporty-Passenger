@@ -1,15 +1,16 @@
+// IT18233704 - N.R Yamasinghe Version-01
 import React, { useContext } from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import Paper from "@material-ui/core/Paper";
-import Stepper from "@material-ui/core/Stepper";
-import Step from "@material-ui/core/Step";
-import StepLabel from "@material-ui/core/StepLabel";
-import Button from "@material-ui/core/Button";
-import Typography from "@material-ui/core/Typography";
+import moment from "moment";
+import Review from "./Review";
 import AddressForm from "./AddressForm";
 import PaymentForm from "./PaymentForm";
-import Review from "./Review";
-import moment from "moment";
+import Step from "@material-ui/core/Step";
+import Paper from "@material-ui/core/Paper";
+import Button from "@material-ui/core/Button";
+import Stepper from "@material-ui/core/Stepper";
+import StepLabel from "@material-ui/core/StepLabel";
+import Typography from "@material-ui/core/Typography";
+import { makeStyles } from "@material-ui/core/styles";
 import { PassengerContext } from "./../../../context/PassengerContext";
 
 const useStyles = makeStyles((theme) => ({
@@ -40,7 +41,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const steps = ["Personal Details", "Payment Details", "Summary"];
-
 function getStepContent(step) {
   switch (step) {
     case 0:
@@ -56,9 +56,8 @@ function getStepContent(step) {
 
 export default function Checkout() {
   const { rechargeAccount, id, updateBalance } = useContext(PassengerContext);
-  const classes = useStyles();
   const [activeStep, setActiveStep] = React.useState(0);
-
+  const classes = useStyles();
   const handleNext = () => {
     setActiveStep(activeStep + 1);
     if (activeStep === steps.length - 1) {
@@ -71,7 +70,7 @@ export default function Checkout() {
       const amountString = localStorage.getItem("amount");
       const amount = parseFloat(amountString);
       const country = localStorage.getItem("country");
-      var currentDate = moment().unix();
+      var currentDate = moment().format();
 
       const rechargeData = {
         date: currentDate,

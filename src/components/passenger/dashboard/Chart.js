@@ -1,4 +1,6 @@
+// IT18233704 - N.R Yamasinghe Version-01
 import React from "react";
+import Title from "./Title";
 import { useTheme } from "@material-ui/core/styles";
 import {
   LineChart,
@@ -8,9 +10,7 @@ import {
   Label,
   ResponsiveContainer,
 } from "recharts";
-import Title from "./Title";
 
-// Generate Sales Data
 function createData(time, amount) {
   return { time, amount };
 }

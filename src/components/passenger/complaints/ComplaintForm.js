@@ -1,8 +1,9 @@
 // IT18233704 - N.R Yamasinghe Version-01
 import React, { Component } from "react";
+import clsx from "clsx";
+import SendIcon from "@material-ui/icons/Send";
 import withStyles from "@material-ui/core/styles/withStyles";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import { PassengerContext } from "./../../../context/PassengerContext";
 import {
   Card,
   CardActions,
@@ -12,7 +13,7 @@ import {
   Grid,
   TextField,
 } from "@material-ui/core";
-import clsx from "clsx";
+import { PassengerContext } from "./../../../context/PassengerContext";
 
 const styles = (theme) => ({
   content: {
@@ -62,16 +63,15 @@ const styles = (theme) => ({
   },
 });
 
-class Coupon extends Component {
+class ComplaintForm extends Component {
   static contextType = PassengerContext;
   state = {
-    couponNo: "",
-    amount: "",
+    routeNo: "",
+    vehicleNo: "",
+    complaint: "",
+    Date: "",
     uiLoading: false,
     buttonLoading: false,
-    imageError: "",
-    balance: 0,
-    progress: 0,
   };
 
   handleChange = (event) => {
@@ -82,19 +82,23 @@ class Coupon extends Component {
 
   updateFormValues = (event) => {
     event.preventDefault();
-    const { amount, couponNo } = this.state;
-    const amountFloat = parseFloat(amount);
-    const rechargeData = {
-      amount: amountFloat,
-      couponNo: couponNo,
-    };
-    this.context.rechargeAccountCoupon(rechargeData);
-    this.context.updateBalance(amount, this.context.id);
+    const { routeNo, vehicleNo, complaint, date } = this.state;
+    try {
+      this.context.sendComplaints(routeNo, vehicleNo, complaint, date);
+      this.setState({ routeNo: "", vehicleNo: "", complaint: "", date: "" });
+    } catch (error) {}
   };
 
   render() {
+    const {
+      uiLoading,
+      routeNo,
+      vehicleNo,
+      complaint,
+      date,
+      buttonLoading,
+    } = this.state;
     const { classes, ...rest } = this.props;
-    const { uiLoading, couponNo, amount, buttonLoading } = this.state;
     if (uiLoading === true) {
       return (
         <main className={classes.content}>
@@ -106,7 +110,7 @@ class Coupon extends Component {
       );
     } else {
       return (
-        <div>
+        <main className={classes.content}>
           <Card {...rest} className={clsx(classes.root, classes)}>
             <form
               autoComplete="off"
@@ -119,22 +123,48 @@ class Coupon extends Component {
                   <Grid item md={6} xs={12}>
                     <TextField
                       fullWidth
-                      label="Coupon Number"
+                      label="Route Number"
                       margin="dense"
-                      name="couponNo"
+                      name="routeNo"
                       variant="outlined"
-                      value={couponNo}
+                      value={routeNo}
                       onChange={this.handleChange}
                     />
                   </Grid>
                   <Grid item md={6} xs={12}>
                     <TextField
                       fullWidth
-                      label="Amount"
+                      label="Vehicle Number"
                       margin="dense"
-                      name="amount"
+                      name="vehicleNo"
+                      type="text"
                       variant="outlined"
-                      value={amount}
+                      value={vehicleNo}
+                      onChange={this.handleChange}
+                    />
+                  </Grid>
+                  <Grid item md={6} xs={12}>
+                    <TextField
+                      fullWidth
+                      margin="dense"
+                      name="date"
+                      variant="outlined"
+                      value={date}
+                      type="date"
+                      onChange={this.handleChange}
+                    />
+                  </Grid>
+                  <Grid item md={6} xs={12}>
+                    <TextField
+                      fullWidth
+                      multiline
+                      rows={4}
+                      id="outlined-multiline-static"
+                      label="Complaint"
+                      margin="dense"
+                      name="complaint"
+                      variant="outlined"
+                      value={complaint}
                       onChange={this.handleChange}
                     />
                   </Grid>
@@ -143,27 +173,24 @@ class Coupon extends Component {
               <CardActions />
             </form>
           </Card>
+          <br />
           <Button
-            color="primary"
-            variant="contained"
             type="submit"
             className={classes.submitButton}
+            variant="contained"
+            color="primary"
+            endIcon={<SendIcon />}
             onClick={this.updateFormValues}
-            disabled={
-              this.state.buttonLoading ||
-              !this.state.amount ||
-              !this.state.couponNo
-            }
+            disabled={buttonLoading}
           >
-            Recharge
+            Send
             {buttonLoading && (
               <CircularProgress size={30} className={classes.progess} />
             )}
           </Button>
-        </div>
+        </main>
       );
     }
   }
 }
-
-export default withStyles(styles)(Coupon);
+export default withStyles(styles)(ComplaintForm);

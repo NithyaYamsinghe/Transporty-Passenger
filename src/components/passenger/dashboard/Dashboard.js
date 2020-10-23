@@ -1,35 +1,37 @@
 import React, { useState, useContext } from "react";
 import clsx from "clsx";
-import { makeStyles } from "@material-ui/core/styles";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import Drawer from "@material-ui/core/Drawer";
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
-import Typography from "@material-ui/core/Typography";
-import Divider from "@material-ui/core/Divider";
-import IconButton from "@material-ui/core/IconButton";
-import Avatar from "@material-ui/core/avatar";
-import Badge from "@material-ui/core/Badge";
-import Container from "@material-ui/core/Container";
-import MenuIcon from "@material-ui/icons/Menu";
-import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
-import NotificationsIcon from "@material-ui/icons/Notifications";
+import Chart from "./Chart";
+import Journeys from "./Journeys";
 import ListItems from "./ListItems";
 import Copyright from "./Copyright";
+import { Link } from "react-router-dom";
+import Alert from "@material-ui/lab/Alert";
+import Booking from "./../booking/Booking";
+import CardStatistic from "./CardStatistic";
 import Account from "./../account/Account";
 import Journey from "./../journey/Journey";
-import TopUpAccount from "./../payment/TopUpAccount";
 import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
-import Journeys from "./Journeys";
+import Badge from "@material-ui/core/Badge";
+import Drawer from "@material-ui/core/Drawer";
+import MenuIcon from "@material-ui/icons/Menu";
+import AppBar from "@material-ui/core/AppBar";
+import Avatar from "@material-ui/core/avatar";
+import Divider from "@material-ui/core/Divider";
+import Toolbar from "@material-ui/core/Toolbar";
+import Container from "@material-ui/core/Container";
+import Complaints from "./../complaints/Complaints";
+import TopUpAccount from "./../payment/TopUpAccount";
+import { makeStyles } from "@material-ui/core/styles";
+import IconButton from "@material-ui/core/IconButton";
+import Typography from "@material-ui/core/Typography";
+import CssBaseline from "@material-ui/core/CssBaseline";
 import PaymentHistory from "./../payment/PaymentHistory";
+import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
+import NotificationsIcon from "@material-ui/icons/Notifications";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { PassengerContext } from "./../../../context/PassengerContext";
-import CardStatistic from "./CardStatistic";
-import Chart from "./Chart";
-import Booking from "./../booking/Booking";
-import Alert from "@material-ui/lab/Alert";
-import { Link } from "react-router-dom";
+
 const drawerWidth = 240;
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -288,6 +290,7 @@ export default function Dashboard() {
         {renderTopUpAccount && <TopUpAccount />}
         {renderPayment && <PaymentHistory />}
         {renderBooking && <Booking />}
+        {renderReport && <Complaints />}
 
         <Copyright />
       </main>

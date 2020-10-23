@@ -1,11 +1,11 @@
+// IT18233704 - N.R Yamasinghe Version-01
 import React from "react";
 import ReactDOM from "react-dom";
 import * as serviceWorker from "./serviceWorker";
 import { BrowserRouter } from "react-router-dom";
 import { PassengerProvider } from "./context/PassengerContext";
 import "bootstrap/dist/css/bootstrap.min.css";
-
-// We get the firebase object that is exposed in ./firebase/firebase.js and pass it as an global object
+// get the firebase object that is exposed in ./firebase/firebase.js and pass it as an global object
 import firebase from "./firebase/firebase";
 
 import App from "./App";

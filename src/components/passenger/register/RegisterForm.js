@@ -1,16 +1,17 @@
+// IT18233704 - N.R Yamasinghe Version-01
 import React, { Component } from "react";
 import Link from "@material-ui/core/Link";
 import Grid from "@material-ui/core/Grid";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
-import TextField from "@material-ui/core/TextField";
 import Container from "@material-ui/core/Container";
+import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
+import firebaseApp from "./../../../firebase/firebase";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import withStyles from "@material-ui/core/styles/withStyles";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import firebaseApp from "./../../../firebase/firebase";
 
 const styles = (theme) => ({
   paper: {
@@ -86,7 +87,7 @@ class RegisterForm extends Component {
             .then(() => {
               console.log("Email sent");
             })
-            .catch((error) => {});
+            .catch(() => {});
           var uid = firebaseApp.auth().currentUser.uid;
           const newPassengerData = {
             userId: uid,

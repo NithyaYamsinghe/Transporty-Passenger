@@ -1,9 +1,10 @@
+// IT18233704 - N.R Yamasinghe Version-01
 import React, { useState } from "react";
-import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
-import TextField from "@material-ui/core/TextField";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
+import TextField from "@material-ui/core/TextField";
+import Typography from "@material-ui/core/Typography";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
 
 export default function PaymentForm() {
   const [cardName, setCardName] = useState("");
@@ -14,12 +15,12 @@ export default function PaymentForm() {
   localStorage.setItem("cardNumber", cardNumber);
   localStorage.setItem("expDate", expDate);
   localStorage.setItem("cvv", cvv);
+
   return (
     <React.Fragment>
       <Typography variant="h6" gutterBottom>
         Payment method
       </Typography>
-
       <Grid container spacing={3}>
         <Grid item xs={12} md={6}>
           <TextField

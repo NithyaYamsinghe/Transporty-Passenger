@@ -1,10 +1,9 @@
+// IT18233704 - N.R Yamasinghe Version-01
 import * as firebase from "firebase/app";
 import "firebase/auth"; // for authorization
 import "firebase/database"; // for database
 import "firebase/storage";
 
-// I created a firebase project, and these are the configurations
-// I will give y'all access to the project
 const firebaseConfig = {
   apiKey: "AIzaSyCV-bheA63QRk5X_-V168cv9OKEpCM2zf8",
   authDomain: "transporty-e3217.firebaseapp.com",
@@ -17,11 +16,4 @@ const firebaseConfig = {
 };
 
 const firebaseApp = firebase.initializeApp(firebaseConfig);
-
-/**
- * expose this firebaseApp object globaly. Every function is implemented here such as
- * auth, working with database, etc
- * SEE THE App.js for an example
- * HERE IS THE DOCUMENTATION FOR EVERYTHING >> https://firebase.google.com/docs/auth/web/start
- */
 export default firebaseApp;

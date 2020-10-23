@@ -1,3 +1,4 @@
+// IT18233704 - N.R Yamasinghe Version-01
 import React, { Component } from "react";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
@@ -8,8 +9,7 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 import withStyles from "@material-ui/core/styles/withStyles";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import firebaseApp from "./../../../firebase/firebase";
-import Swal from "sweetalert2";
+import { PassengerContext } from "./../../../context/PassengerContext";
 
 const styles = (theme) => ({
   paper: {
@@ -40,6 +40,7 @@ const styles = (theme) => ({
 });
 
 class ForgotPassword extends Component {
+  static contextType = PassengerContext;
   constructor(props) {
     super(props);
     this.state = {
@@ -47,13 +48,6 @@ class ForgotPassword extends Component {
       errors: [{ email: "" }],
       loading: false,
     };
-  }
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.UI.errors) {
-      this.setState({
-        errors: nextProps.UI.errors,
-      });
-    }
   }
 
   handleChange = (event) => {
@@ -65,30 +59,8 @@ class ForgotPassword extends Component {
   handleSubmit = (event) => {
     event.preventDefault();
     this.setState({ loading: true });
-    var auth = firebaseApp.auth();
     const { email } = this.state;
-    auth
-      .sendPasswordResetEmail(email)
-      .then(() => {
-        this.setState({ loading: false });
-        Swal.fire({
-          icon: "success",
-          title: "Email sent successfully",
-          text: "please check your email",
-          showConfirmButton: true,
-          timer: 1500,
-        }).then(() => {
-          window.location = "/login";
-        });
-      })
-      .catch(function (error) {
-        Swal.fire({
-          icon: "error",
-          title: "Oops...",
-          text: "something went wrong",
-        });
-        window.location = "/resetPassword";
-      });
+    this.context.forgotPassword(email);
   };
 
   render() {

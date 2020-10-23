@@ -1,3 +1,4 @@
+// IT18233704 - N.R Yamasinghe Version-01
 import React, { Component } from "react";
 import withStyles from "@material-ui/core/styles/withStyles";
 import CircularProgress from "@material-ui/core/CircularProgress";
@@ -11,7 +12,7 @@ import {
   TextField,
 } from "@material-ui/core";
 import clsx from "clsx";
-import firebaseApp from "./../../../firebase/firebase";
+import { PassengerContext } from "./../../../context/PassengerContext";
 
 const styles = (theme) => ({
   content: {
@@ -62,14 +63,12 @@ const styles = (theme) => ({
 });
 
 class PasswordReset extends Component {
+  static contextType = PassengerContext;
   state = {
     password: "................",
     confirmPassword: "...................",
     uiLoading: true,
     buttonLoading: false,
-    imageError: "",
-    balance: 0,
-    progress: 0,
   };
 
   componentWillMount = () => {
@@ -86,29 +85,18 @@ class PasswordReset extends Component {
 
   updateFormValues = (event) => {
     event.preventDefault();
-    this.setState({ buttonLoading: true });
     const { password, confirmPassword } = this.state;
-    if (password === confirmPassword) {
-      var user = firebaseApp.auth().currentUser;
-      user
-        .updatePassword(password)
-        .then(function () {
-          console.log("password updated");
-        })
-        .catch(function (error) {
-          // An error happened.
-        });
-    } else {
-    }
+    this.context.passwordReset(password, confirmPassword);
   };
 
   render() {
     const { classes, ...rest } = this.props;
-    if (this.state.uiLoading === true) {
+    const { uiLoading, password, confirmPassword, buttonLoading } = this.state;
+    if (uiLoading === true) {
       return (
         <main className={classes.content}>
           <div className={classes.toolbar} />
-          {this.state.uiLoading && (
+          {uiLoading && (
             <CircularProgress size={150} className={classes.uiProgess} />
           )}
         </main>
@@ -132,18 +120,20 @@ class PasswordReset extends Component {
                       margin="dense"
                       name="password"
                       variant="outlined"
-                      value={this.state.password}
+                      value={password}
                       onChange={this.handleChange}
+                      type="password"
                     />
                   </Grid>
                   <Grid item md={6} xs={12}>
                     <TextField
                       fullWidth
+                      type="password"
                       label="Confirm Password"
                       margin="dense"
                       name="confirmPassword"
                       variant="outlined"
-                      value={this.state.confirmPassword}
+                      value={confirmPassword}
                       onChange={this.handleChange}
                     />
                   </Grid>
@@ -158,10 +148,10 @@ class PasswordReset extends Component {
             type="submit"
             className={classes.submitButton}
             onClick={this.updateFormValues}
-            disabled={!this.state.buttonLoading}
+            disabled={buttonLoading}
           >
             Save details
-            {this.state.buttonLoading && (
+            {buttonLoading && (
               <CircularProgress size={30} className={classes.progess} />
             )}
           </Button>

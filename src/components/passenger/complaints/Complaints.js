@@ -1,9 +1,10 @@
 // IT18233704 - N.R Yamasinghe Version-01
 import React, { Component } from "react";
-import Coupon from "./Coupon";
-import Checkout from "./Checkout";
 import Typography from "@material-ui/core/Typography";
 import withStyles from "@material-ui/core/styles/withStyles";
+import Paper from "@material-ui/core/Paper";
+import ComplaintForm from "./ComplaintForm";
+import ComplaintTable from "./ComplaintTable";
 
 const styles = (theme) => ({
   content: {
@@ -11,28 +12,23 @@ const styles = (theme) => ({
     padding: theme.spacing(3),
   },
   toolbar: theme.mixins.toolbar,
-  root: {
-    flexGrow: 1,
-  },
-  paper: {
-    padding: theme.spacing(2),
-    textAlign: "center",
-    color: theme.palette.text.secondary,
-  },
 });
 
-class TopUpAccount extends Component {
+class Complaints extends Component {
   render() {
     const { classes } = this.props;
     return (
       <main className={classes.content}>
-        <br />
+        <div className={classes.toolbar} />
         <Typography paragraph>
-          <Checkout />
-          <Coupon />
+          <ComplaintForm />
+          <Paper>
+            <ComplaintTable />
+          </Paper>
         </Typography>
       </main>
     );
   }
 }
-export default withStyles(styles)(TopUpAccount);
+
+export default withStyles(styles)(Complaints);

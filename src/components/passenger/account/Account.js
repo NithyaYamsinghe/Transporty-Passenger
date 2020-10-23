@@ -1,3 +1,4 @@
+// IT18233704 - N.R Yamasinghe Version-01
 import React, { Component } from "react";
 import Typography from "@material-ui/core/Typography";
 import withStyles from "@material-ui/core/styles/withStyles";
@@ -15,7 +16,7 @@ import {
 } from "@material-ui/core";
 import clsx from "clsx";
 import PasswordReset from "./PasswordReset";
-import firebaseApp from "./../../../firebase/firebase";
+import { PassengerContext } from "./../../../context/PassengerContext";
 
 const styles = (theme) => ({
   content: {
@@ -66,6 +67,7 @@ const styles = (theme) => ({
 });
 
 class Account extends Component {
+  static contextType = PassengerContext;
   state = {
     firstName: "",
     lastName: "",
@@ -78,41 +80,31 @@ class Account extends Component {
     buttonLoading: false,
     imageError: "",
     balance: 0,
-    progress: 0,
-    progressVisible: false,
   };
 
   componentDidMount = () => {
-    firebaseApp.auth().onAuthStateChanged((user) => {
-      var id = user.uid;
-      var ref = firebaseApp.database().ref("passengers");
-      ref.on("value", (snapshot) => {
-        snapshot.forEach((childSnapshot) => {
-          var childData = childSnapshot.val();
-          if (childData.userId === id) {
-            var data = childData;
-            console.log(data);
-            this.setState({
-              firstName: data.firstName,
-              lastName: data.lastName,
-              username: data.username,
-              email: data.email,
-              phoneNumber: data.phoneNumber,
-              NIC: data.NIC,
-              balance: data.balance,
-            });
-          }
-        });
-      });
+    const {
+      firstName,
+      lastName,
+      email,
+      phoneNumber,
+      username,
+      NIC,
+      balance,
+    } = this.context;
+
+    this.setState({
+      firstName: firstName,
+      lastName: lastName,
+      username: username,
+      email: email,
+      phoneNumber: phoneNumber,
+      NIC: NIC,
+      balance: balance,
     });
+
     this.setState({ uiLoading: false });
   };
-
-  // componentWillMount = () => {
-  //   this.setState({
-  //     uiLoading: false,
-  //   });
-  // };
 
   handleChange = (event) => {
     this.setState({
@@ -132,44 +124,7 @@ class Account extends Component {
       uiLoading: true,
     });
     const { image } = this.state;
-    const uploadTask = firebaseApp
-      .storage()
-      .ref(`images/${image.name}`)
-      .put(image);
-    uploadTask.on(
-      "state_changed",
-      (snapshot) => {
-        this.setState({ progressVisible: true });
-        const progress = Math.round(
-          (snapshot.bytesTransferred / snapshot.totalBytes) * 100
-        );
-        this.setState({ progress, progressVisible: true });
-      },
-      (error) => {
-        console.log(error);
-      },
-      () => {
-        firebaseApp
-          .storage()
-          .ref("images")
-          .child(image.name)
-          .getDownloadURL()
-          .then((url) => {
-            firebaseApp.auth().onAuthStateChanged((user) => {
-              var id = user.uid;
-              var query = firebaseApp
-                .database()
-                .ref("passengers")
-                .orderByChild("userId")
-                .equalTo(id);
-              query.once("child_added", (snapshot) => {
-                snapshot.ref.update({ image: url });
-              });
-            });
-          });
-        this.setState({ progressVisible: false, image: "" });
-      }
-    );
+    this.context.updateProfilePicture(image);
     this.setState({
       uiLoading: false,
     });
@@ -177,37 +132,30 @@ class Account extends Component {
 
   updateFormValues = (event) => {
     event.preventDefault();
-    this.setState({ buttonLoading: true });
-    firebaseApp.auth().onAuthStateChanged((user) => {
-      var id = user.uid;
-
-      var query = firebaseApp
-        .database()
-        .ref("passengers")
-        .orderByChild("userId")
-        .equalTo(id);
-      query
-        .once("child_added", (snapshot) => {
-          snapshot.ref.update({
-            firstName: this.state.firstName,
-            lastName: this.state.lastName,
-            username: this.state.username,
-            phoneNumber: this.state.phoneNumber,
-          });
-        })
-        .then(() => {});
-    });
-    this.setState({ buttonLoading: false });
+    const { firstName, lastName, username, phoneNumber } = this.state;
+    try {
+      this.context.updateAccount(firstName, lastName, username, phoneNumber);
+    } catch (error) {}
   };
 
   render() {
-    const { progress, progressVisible } = this.state;
+    const { progress, progressVisible } = this.context;
+    const {
+      uiLoading,
+      firstName,
+      lastName,
+      username,
+      email,
+      NIC,
+      phoneNumber,
+      buttonLoading,
+    } = this.state;
     const { classes, ...rest } = this.props;
-    if (this.state.uiLoading === true) {
+    if (uiLoading === true) {
       return (
         <main className={classes.content}>
           <div className={classes.toolbar} />
-          {this.state.uiLoading && (
+          {uiLoading && (
             <CircularProgress size={150} className={classes.uiProgess} />
           )}
         </main>
@@ -225,7 +173,7 @@ class Account extends Component {
                     gutterBottom
                     variant="h4"
                   >
-                    {this.state.firstName} {this.state.lastName}
+                    {firstName} {lastName}
                   </Typography>
                   <Button
                     variant="outlined"
@@ -272,7 +220,7 @@ class Account extends Component {
                       margin="dense"
                       name="firstName"
                       variant="outlined"
-                      value={this.state.firstName}
+                      value={firstName}
                       onChange={this.handleChange}
                     />
                   </Grid>
@@ -283,7 +231,7 @@ class Account extends Component {
                       margin="dense"
                       name="lastName"
                       variant="outlined"
-                      value={this.state.lastName}
+                      value={lastName}
                       onChange={this.handleChange}
                     />
                   </Grid>
@@ -295,7 +243,7 @@ class Account extends Component {
                       margin="dense"
                       name="username"
                       variant="outlined"
-                      value={this.state.username}
+                      value={username}
                       onChange={this.handleChange}
                     />
                   </Grid>
@@ -307,7 +255,7 @@ class Account extends Component {
                       name="phoneNumber"
                       type="number"
                       variant="outlined"
-                      value={this.state.phoneNumber}
+                      value={phoneNumber}
                       onChange={this.handleChange}
                     />
                   </Grid>
@@ -319,7 +267,7 @@ class Account extends Component {
                       name="email"
                       disabled={true}
                       variant="outlined"
-                      value={this.state.email}
+                      value={email}
                       onChange={this.handleChange}
                     />
                   </Grid>
@@ -331,7 +279,7 @@ class Account extends Component {
                       name="country"
                       variant="outlined"
                       disabled={true}
-                      value={this.state.NIC}
+                      value={NIC}
                       onChange={this.handleChange}
                     />
                   </Grid>
@@ -346,10 +294,10 @@ class Account extends Component {
             type="submit"
             className={classes.submitButton}
             onClick={this.updateFormValues}
-            disabled={this.state.buttonLoading}
+            disabled={buttonLoading}
           >
             Save details
-            {this.state.buttonLoading && (
+            {buttonLoading && (
               <CircularProgress size={30} className={classes.progess} />
             )}
           </Button>

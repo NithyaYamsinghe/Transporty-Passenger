@@ -1,7 +1,8 @@
+// IT18233704 - N.R Yamasinghe Version-01
 import React from "react";
+import Grid from "@material-ui/core/Grid";
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
-import Grid from "@material-ui/core/Grid";
 
 const useStyles = makeStyles((theme) => ({
   listItem: {
@@ -16,6 +17,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Review() {
+  const classes = useStyles();
   const cardName = localStorage.getItem("cardName");
   const cardNumber = localStorage.getItem("cardNumber");
   const expDate = localStorage.getItem("expDate");
@@ -27,8 +29,6 @@ export default function Review() {
     { name: "Card number", detail: cardNumber },
     { name: "Expiry date", detail: expDate },
   ];
-
-  const classes = useStyles();
 
   return (
     <React.Fragment>

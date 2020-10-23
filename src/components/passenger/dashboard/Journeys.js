@@ -1,14 +1,15 @@
+// IT18233704 - N.R Yamasinghe Version-01
 import React, { useContext } from "react";
+import moment from "moment";
+import Title from "./Title";
 import Link from "@material-ui/core/Link";
-import { makeStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
+import TableRow from "@material-ui/core/TableRow";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableHead from "@material-ui/core/TableHead";
-import TableRow from "@material-ui/core/TableRow";
-import Title from "./Title";
+import { makeStyles } from "@material-ui/core/styles";
 import { PassengerContext } from "../../../context/PassengerContext";
-import moment from "moment";
 
 function preventDefault(event) {
   event.preventDefault();
@@ -26,15 +27,12 @@ export default function Journeys() {
   function createData(
     dateString,
     costValue,
-    distanceTravelledValue,
     destination,
     routeNo,
     startingPoint
   ) {
-    var date = moment(dateString).format("YYYY-MM-DD");
-    var time = moment(dateString).format("hh:mm:ss a");
     var cost = `${costValue}.00`;
-    var distanceTravelled = `${distanceTravelledValue} Km`;
+    var date = moment(dateString).format("YYYY-MM-DD");
     return {
       date,
       cost,
@@ -52,7 +50,6 @@ export default function Journeys() {
         createData(
           journey.date,
           journey.cost,
-          journey.distanceTravelled,
           journey.routeTaken.destination,
           journey.routeTaken.routeNo,
           journey.routeTaken.startingPoint
