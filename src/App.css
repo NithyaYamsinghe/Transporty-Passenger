@@ -37,3 +37,9 @@
     transform: rotate(360deg);
   }
 }
+
+.button-style {
+  border: 1px solid blue;
+  padding: 10px;
+  text-decoration: none;
+}

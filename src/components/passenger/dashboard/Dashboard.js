@@ -149,6 +149,7 @@ export default function Dashboard() {
     loading,
   } = useContext(PassengerContext);
 
+  console.log(journeysOnGoing);
   const handleDrawerOpen = () => {
     setOpen(true);
   };
@@ -235,6 +236,7 @@ export default function Dashboard() {
             {balance === 0 && (
               <Alert severity="info">Please recharge your account</Alert>
             )}
+
             {loading && <CircularProgress />}
             {!loading && (
               <Container maxWidth="lg" className={classes.container}>

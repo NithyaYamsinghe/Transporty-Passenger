@@ -1,5 +1,6 @@
 // IT18233704 - N.R Yamasinghe Version-01
 import React, { Component } from "react";
+import Alert from "@material-ui/lab/Alert";
 import Typography from "@material-ui/core/Typography";
 import withStyles from "@material-ui/core/styles/withStyles";
 import CloudUploadIcon from "@material-ui/icons/CloudUpload";
@@ -75,6 +76,8 @@ class Account extends Component {
     phoneNumber: "",
     username: "",
     NIC: "",
+    passportNo: "",
+    isForeigner: false,
     profilePicture: "",
     uiLoading: true,
     buttonLoading: false,
@@ -91,6 +94,8 @@ class Account extends Component {
       username,
       NIC,
       balance,
+      passportNo,
+      isForeigner,
     } = this.context;
 
     this.setState({
@@ -101,6 +106,8 @@ class Account extends Component {
       phoneNumber: phoneNumber,
       NIC: NIC,
       balance: balance,
+      passportNo: passportNo,
+      isForeigner: isForeigner,
     });
 
     this.setState({ uiLoading: false });
@@ -149,6 +156,8 @@ class Account extends Component {
       NIC,
       phoneNumber,
       buttonLoading,
+      passportNo,
+      isForeigner,
     } = this.state;
     const { classes, ...rest } = this.props;
     if (uiLoading === true) {
@@ -165,6 +174,9 @@ class Account extends Component {
         <main className={classes.content}>
           <div className={classes.toolbar} />
           <Card {...rest} className={clsx(classes.root, classes)}>
+            {isForeigner && (
+              <Alert severity="info">This is a temporay account</Alert>
+            )}
             <CardContent>
               <div className={classes.details}>
                 <div>
@@ -272,16 +284,29 @@ class Account extends Component {
                     />
                   </Grid>
                   <Grid item md={6} xs={12}>
-                    <TextField
-                      fullWidth
-                      label="NIC"
-                      margin="dense"
-                      name="country"
-                      variant="outlined"
-                      disabled={true}
-                      value={NIC}
-                      onChange={this.handleChange}
-                    />
+                    {NIC !== "" ? (
+                      <TextField
+                        fullWidth
+                        label="NIC"
+                        margin="dense"
+                        name="NIC"
+                        variant="outlined"
+                        disabled={true}
+                        value={NIC}
+                        onChange={this.handleChange}
+                      />
+                    ) : (
+                      <TextField
+                        fullWidth
+                        label="Passport No"
+                        margin="dense"
+                        name="passportNo"
+                        variant="outlined"
+                        disabled={true}
+                        value={passportNo}
+                        onChange={this.handleChange}
+                      />
+                    )}
                   </Grid>
                 </Grid>
               </CardContent>

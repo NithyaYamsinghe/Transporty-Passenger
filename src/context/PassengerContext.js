@@ -18,6 +18,8 @@ class PassengerProvider extends Component {
     NIC: "",
     balance: 0,
     image: "",
+    passportNo: "",
+    isForeigner: false,
     emailVerified: false,
     journeys: [],
     sortedJourneys: [],
@@ -612,6 +614,8 @@ class PassengerProvider extends Component {
               NIC: data.NIC,
               balance: data.balance,
               image: data.image,
+              passportNo: data.passportNo,
+              isForeigner: data.isForeigner,
             });
           }
         });

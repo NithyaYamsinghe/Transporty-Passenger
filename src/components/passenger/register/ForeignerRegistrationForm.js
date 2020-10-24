@@ -36,14 +36,14 @@ const styles = (theme) => ({
   },
 });
 
-class RegisterForm extends Component {
+class ForeignerRegisterForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
       firstName: "",
       lastName: "",
       phoneNumber: "",
-      NIC: "",
+      passportNo: "",
       username: "",
       email: "",
       password: "",
@@ -94,13 +94,13 @@ class RegisterForm extends Component {
             firstName: this.state.firstName,
             lastName: this.state.lastName,
             phoneNumber: this.state.phoneNumber,
-            NIC: this.state.NIC,
+            NIC: "",
             username: this.state.username,
             email: this.state.email,
             balance: this.state.balance,
             image: this.state.image,
-            passportNo: "",
-            isForeigner: false,
+            passportNo: this.state.passportNo,
+            isForeigner: true,
           };
           firebaseApp
             .database()
@@ -236,12 +236,12 @@ class RegisterForm extends Component {
                   variant="outlined"
                   required
                   fullWidth
-                  id="NIC"
-                  label="NIC"
-                  name="NIC"
-                  autoComplete="NIC"
-                  helperText={errors.NIC}
-                  error={errors.NIC ? true : false}
+                  id="passportNo"
+                  label="Passport No"
+                  name="passportNo"
+                  autoComplete="passportNo"
+                  helperText={errors.passportNo}
+                  error={errors.passportNo ? true : false}
                   onChange={this.handleChange}
                 />
               </Grid>
@@ -287,7 +287,7 @@ class RegisterForm extends Component {
                 !this.state.password ||
                 !this.state.firstName ||
                 !this.state.lastName ||
-                !this.state.NIC ||
+                !this.state.passportNo ||
                 !this.state.username ||
                 !this.state.phoneNumber ||
                 !this.state.password ||
@@ -312,4 +312,4 @@ class RegisterForm extends Component {
     );
   }
 }
-export default withStyles(styles)(RegisterForm);
+export default withStyles(styles)(ForeignerRegisterForm);

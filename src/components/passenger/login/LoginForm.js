@@ -181,7 +181,7 @@ class LoginForm extends Component {
               <Grid item>
                 <Link
                   style={{ textDecoration: "none" }}
-                  href="register"
+                  href="selectType"
                   variant="body2"
                 >
                   {"Don't have an account? Sign Up"}
